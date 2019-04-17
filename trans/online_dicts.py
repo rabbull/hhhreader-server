@@ -23,10 +23,13 @@ def query_from_iciba_and_save(word: str):
         raise Word.WordNotFound()
     word.save()
     for mean in response['symbols'][0]['parts']:
-        mean_mean = mean['means'][0]
-        for m in mean['means'][1:]:
-            mean_mean += ', '
-            mean_mean += m
+        # mean_mean = mean['means'][0]
+        # for m in mean['means'][1:]:
+        #     mean_mean += ', '
+        #     mean_mean += m
+        sd = ", "
+        mean_mean = sd.join(mean['means'])
+
         word.mean_set.create(
             mean_language=1,
             mean_part=mean['part'],
