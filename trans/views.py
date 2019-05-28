@@ -1,7 +1,6 @@
 import json
 
 from django.http import HttpResponse
-from django.shortcuts import render
 
 # Create your views here.
 from trans import wx
@@ -88,3 +87,19 @@ def login(request, app_id: str, app_secret: str, js_code: str):
         'error_message': 'success',
         'openid': openid,
     }))
+
+
+def query_all_marked_word(request, user_openid: str):
+    users = User.objects.filter(user_openid__exact=user_openid)
+    if users.count() == 0:
+        return HttpResponse(json.dumps({
+            'status_code': -1,
+            'error_message': 'no such user',
+        }))
+    user = users.first()
+
+    ret = []
+    for word in user.user_marks_set.all():
+        ret.append(word.as_dict())
+
+    return HttpResponse(json.dumps(ret))
