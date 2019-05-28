@@ -1,2 +1,6 @@
 trans/baidu_api/appid
 trans/baidu_api/key
+env/
+trans/migrations
+trans/__pycache__
+server/__pycache__
