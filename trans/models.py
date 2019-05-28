@@ -67,3 +67,8 @@ class Mean(models.Model):
 
     def as_json(self):
         return json.dumps(self.as_dict())
+
+
+class User(models.Model):
+    user_openid = models.CharField(max_length=28, null=False, unique=True)
+    user_marks = models.ManyToManyField(Word)
