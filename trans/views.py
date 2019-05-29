@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponse
 
 # Create your views here.
-from trans import wx
+from trans import wx, ebook
 from trans.models import Word, User
 from trans.online_dicts import query_from_iciba_and_save
 from trans.online_translate_apis import baidu_fanyi_api
@@ -103,3 +103,20 @@ def query_all_marked_word(request, user_openid: str):
         ret.append(word.as_dict())
 
     return HttpResponse(json.dumps(ret))
+
+
+def fetch_whole_book(request, idx: int):
+    return HttpResponse(json.dumps(ebook.get_content(idx)))
+
+
+def fetch_paragraph(request, idx: int, left: int, right: int):
+    content = ebook.get_content(idx)
+    return HttpResponse(json.dumps(content[left:right] if right < len(content) else content[left:]))
+
+
+def query_metadata(request, idx: int):
+    return HttpResponse(json.dumps(ebook.get_metadata(idx)))
+
+
+def search_by_title(request, title: str):
+    return HttpResponse(json.dumps(ebook.search_by_title(title)))
